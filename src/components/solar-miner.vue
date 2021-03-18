@@ -15,9 +15,6 @@
             <div class="col-start-left col-end-center">Storage capacity</div>
             <div class="col-start-center col-end-right text-right">{{ planets.earth.storageCapacity }}</div>
 
-            <div class="col-start-left col-end-center">Ships</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.earth.ships.length }}</div>
-
             <div class="col-start-left col-end-right">
                 <button class="border hover:bg-green-500 m-1 p-1 "
                         @click="buyStorage(planets.earth)">Buy storage (100)</button>
@@ -39,12 +36,18 @@
             <div class="col-start-left col-end-center">Storage capacity</div>
             <div class="col-start-center col-end-right text-right">{{ planets.moon.storageCapacity }}</div>
 
+            <div class="col-start-left col-end-center">Ships</div>
+            <div class="col-start-center col-end-right text-right">{{ planets.moon.ships.length }}</div>
+
             <div class="col-start-left col-end-right">
                 <button class="border hover:bg-green-500 m-1 p-1 "
                         @click="buyMiner(planets.moon)">Buy miner (100)</button>
 
                 <button class="border hover:bg-green-500 m-1 p-1 "
                         @click="buyStorage(planets.moon)">Buy storage (100)</button>
+
+                <button class="border hover:bg-green-500 m-1 p-1 "
+                        @click="buyShip(planets.moon)">Buy ship (100)</button>
             </div>
         </div>
     </div>
@@ -62,13 +65,13 @@ export default {
             money: 1000,
             processingCapacity: 0,
             storageCapacity: 0,
-            ships: [],
           },
           moon: {
             unminedResources: 1000000000,
             miningCapacity: 0,
             storageCapacity: 0,
             storedResources: 0,
+            ships: [],
           }
         }
       }
@@ -77,6 +80,16 @@ export default {
     methods: {
       buyMiner(planet) {
           planet.miningCapacity += 100;
+
+          this.planets.earth.money -= 100;
+      },
+
+      buyShip(planet) {
+          planet.ships.push({
+            capacity: 1000,
+            load: 0,
+            status: "loading",
+          });
 
           this.planets.earth.money -= 100;
       },
@@ -101,6 +114,51 @@ export default {
         }
 
         planet.unminedResources -= amountMined;
+      },
+
+      ship(planet) {
+        planet.ships.forEach((ship) => {
+          console.log(ship);
+          switch (ship.status) {
+            case 'loading':
+              let loading = ship.capacity - ship.load;
+
+              if (planet.storedResources < loading) {
+                loading = planet.storedResources;
+              }
+
+              ship.load += loading;
+              planet.storedResources -= loading;
+
+              if (ship.load === ship.capacity) {
+                ship.status = 'toEarth';
+              }
+              break;
+
+            case 'toEarth':
+              ship.status = 'unloading';
+              break;
+
+            case 'unloading':
+              let unloading = ship.load;
+
+              if (this.planets.earth.storageCapacity - this.planets.earth.unprocessedResources < unloading) {
+                unloading = this.planets.earth.storageCapacity - this.planets.earth.unprocessedResources;
+              }
+
+              ship.load -= unloading;
+              this.planets.earth.unprocessedResources += unloading;
+
+              if (ship.load === 0) {
+                ship.status = 'toPlanet';
+              }
+              break;
+
+            case 'toPlanet':
+              ship.status = 'loading';
+              break;
+          }
+        });
       }
     },
 
@@ -108,6 +166,8 @@ export default {
       if (!this.timer) {
         this.timer = setInterval(() => {
             this.mine(this.planets.moon);
+
+            this.ship(this.planets.moon);
         }, 1000);
       }
     }
