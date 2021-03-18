@@ -18,6 +18,9 @@
             <div class="col-start-left col-end-right">
                 <button class="border hover:bg-green-500 m-1 p-1 "
                         @click="buyStorage(planets.earth)">Buy storage (100)</button>
+
+                <button class="border hover:bg-green-500 m-1 p-1 "
+                        @click="buyProcessor(planets.earth)">Buy processor (100)</button>
             </div>
         </div>
 
@@ -84,6 +87,12 @@ export default {
           this.planets.earth.money -= 100;
       },
 
+      buyProcessor() {
+        this.planets.earth.processingCapacity += 100;
+
+        this.planets.earth.money -= 100;
+      },
+
       buyShip(planet) {
           planet.ships.push({
             capacity: 1000,
@@ -103,7 +112,7 @@ export default {
       mine(planet) {
         let amountMined = planet.miningCapacity;
 
-        if (planet.unminedResources < planet.miningCapacity) {
+        if (planet.unminedResources < amountMined) {
           amountMined = planet.unminedResources;
         }
         planet.storedResources += amountMined;
@@ -116,9 +125,18 @@ export default {
         planet.unminedResources -= amountMined;
       },
 
+      process() {
+        let amountProcessed = this.planets.earth.processingCapacity;
+
+        if (this.planets.earth.unprocessedResources < amountProcessed) {
+          amountProcessed = this.planets.earth.unprocessedResources;
+        }
+        this.planets.earth.money += amountProcessed;
+        this.planets.earth.unprocessedResources -= amountProcessed;
+      },
+
       ship(planet) {
         planet.ships.forEach((ship) => {
-          console.log(ship);
           switch (ship.status) {
             case 'loading':
               let loading = ship.capacity - ship.load;
@@ -168,6 +186,8 @@ export default {
             this.mine(this.planets.moon);
 
             this.ship(this.planets.moon);
+
+            this.process();
         }, 1000);
       }
     }
