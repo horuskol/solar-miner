@@ -71,6 +71,7 @@ export default {
 
         planets: {
           moon: {
+            distance: 26,
             unminedResources: 1000000000,
             miningCapacity: 0,
             storageCapacity: 0,
@@ -96,6 +97,9 @@ export default {
 
       buyShip(planet) {
           planet.ships.push({
+            speed: 1,
+            progress: 0,
+            distance: planet.distance,
             capacity: 1000,
             load: 0,
             status: "loading",
@@ -155,7 +159,12 @@ export default {
               break;
 
             case 'toEarth':
-              ship.status = 'unloading';
+              ship.progress += ship.speed;
+
+              if (ship.progress > ship.distance) {
+                ship.status = 'unloading';
+                ship.progress = 0;
+              }
               break;
 
             case 'unloading':
@@ -174,7 +183,12 @@ export default {
               break;
 
             case 'toPlanet':
-              ship.status = 'loading';
+              ship.progress += ship.speed;
+
+              if (ship.progress > ship.distance) {
+                ship.status = 'loading';
+                ship.progress = 0;
+              }
               break;
           }
         });
