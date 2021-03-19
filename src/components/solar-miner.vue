@@ -57,6 +57,9 @@
 
                 <button class="border hover:bg-green-500 m-1 p-1 "
                         @click="buyShip(planet)">Buy ship (100)</button>
+
+                <button class="border hover:bg-green-500 m-1 p-1 "
+                        @click="upgradeShips(planet)">Upgrade ship (100)</button>
             </div>
         </div>
     </div>
@@ -100,9 +103,9 @@ export default {
 
     methods: {
       buyMiner(planet) {
-          planet.miningCapacity += 1;
+        planet.miningCapacity += 1;
 
-          this.earth.money -= 100;
+        this.earth.money -= 100;
       },
 
       buyProcessor() {
@@ -112,22 +115,30 @@ export default {
       },
 
       buyShip(planet) {
-          planet.ships.push({
-            speed: 1,
-            progress: 0,
-            distance: planet.distance,
-            capacity: 1000,
-            load: 0,
-            status: "loading",
-          });
+        planet.ships.push({
+          speed: 1,
+          progress: 0,
+          distance: planet.distance,
+          capacity: 1000,
+          load: 0,
+          status: "loading",
+        });
 
-          this.earth.money -= 100;
+        this.earth.money -= 100;
       },
 
       buyStorage(planet) {
-          planet.storageCapacity += 1000;
+        planet.storageCapacity += 1000;
 
-          this.earth.money -= 100;
+        this.earth.money -= 100;
+      },
+
+      upgradeShips(planet) {
+        planet.ships.forEach((ship) => {
+          ship.speed += 1;
+        });
+
+        this.earth.money -= 100;
       },
 
       mine(planet) {
