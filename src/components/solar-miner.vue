@@ -4,23 +4,23 @@
             <h1 class="col-start-left col-end-right">Earth</h1>
 
             <div class="col-start-left col-end-center">Money</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.earth.money }}</div>
+            <div class="col-start-center col-end-right text-right">{{ earth.money }}</div>
 
             <div class="col-start-left col-end-center">Unprocessed resources</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.earth.unprocessedResources }}</div>
+            <div class="col-start-center col-end-right text-right">{{ earth.unprocessedResources }}</div>
 
             <div class="col-start-left col-end-center">Processing capacity</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.earth.processingCapacity }}</div>
+            <div class="col-start-center col-end-right text-right">{{ earth.processingCapacity }}</div>
 
             <div class="col-start-left col-end-center">Storage capacity</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.earth.storageCapacity }}</div>
+            <div class="col-start-center col-end-right text-right">{{ earth.storageCapacity }}</div>
 
             <div class="col-start-left col-end-right">
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="buyStorage(planets.earth)">Buy storage (100)</button>
+                        @click="buyStorage(earth)">Buy storage (100)</button>
 
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="buyProcessor(planets.earth)">Buy processor (100)</button>
+                        @click="buyProcessor(earth)">Buy processor (100)</button>
             </div>
         </div>
 
@@ -62,13 +62,14 @@ export default {
       return {
         timer: null,
 
+        earth: {
+          unprocessedResources: 0,
+          money: 1000,
+          processingCapacity: 0,
+          storageCapacity: 0,
+        },
+
         planets: {
-          earth: {
-            unprocessedResources: 0,
-            money: 1000,
-            processingCapacity: 0,
-            storageCapacity: 0,
-          },
           moon: {
             unminedResources: 1000000000,
             miningCapacity: 0,
@@ -84,13 +85,13 @@ export default {
       buyMiner(planet) {
           planet.miningCapacity += 1;
 
-          this.planets.earth.money -= 100;
+          this.earth.money -= 100;
       },
 
       buyProcessor() {
-        this.planets.earth.processingCapacity += 1;
+        this.earth.processingCapacity += 1;
 
-        this.planets.earth.money -= 100;
+        this.earth.money -= 100;
       },
 
       buyShip(planet) {
@@ -100,13 +101,13 @@ export default {
             status: "loading",
           });
 
-          this.planets.earth.money -= 100;
+          this.earth.money -= 100;
       },
 
       buyStorage(planet) {
           planet.storageCapacity += 1000;
 
-          this.planets.earth.money -= 100;
+          this.earth.money -= 100;
       },
 
       mine(planet) {
@@ -126,13 +127,13 @@ export default {
       },
 
       process() {
-        let amountProcessed = this.planets.earth.processingCapacity;
+        let amountProcessed = this.earth.processingCapacity;
 
-        if (this.planets.earth.unprocessedResources < amountProcessed) {
-          amountProcessed = this.planets.earth.unprocessedResources;
+        if (this.earth.unprocessedResources < amountProcessed) {
+          amountProcessed = this.earth.unprocessedResources;
         }
-        this.planets.earth.money += amountProcessed;
-        this.planets.earth.unprocessedResources -= amountProcessed;
+        this.earth.money += amountProcessed;
+        this.earth.unprocessedResources -= amountProcessed;
       },
 
       ship(planet) {
@@ -160,12 +161,12 @@ export default {
             case 'unloading':
               let unloading = ship.load;
 
-              if (this.planets.earth.storageCapacity - this.planets.earth.unprocessedResources < unloading) {
-                unloading = this.planets.earth.storageCapacity - this.planets.earth.unprocessedResources;
+              if (this.earth.storageCapacity - this.earth.unprocessedResources < unloading) {
+                unloading = this.earth.storageCapacity - this.earth.unprocessedResources;
               }
 
               ship.load -= unloading;
-              this.planets.earth.unprocessedResources += unloading;
+              this.earth.unprocessedResources += unloading;
 
               if (ship.load === 0) {
                 ship.status = 'toPlanet';
