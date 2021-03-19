@@ -15,10 +15,10 @@
 
             <div class="col-start-left col-end-right">
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="buyStorage(earth)">Buy storage (100)</button>
+                        @click="buyProcessor(earth)">Buy processor (100)</button>
 
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="buyProcessor(earth)">Buy processor (100)</button>
+                        @click="buyStorage(earth)">Buy storage (100)</button>
             </div>
         </div>
 
@@ -65,6 +65,20 @@
 </template>
 
 <script>
+// TODO
+// 1. cost to unlock planets beyond moon
+// 2. increase price of new buildings
+// 3. increase maintenance on further planets?
+// 4. technology? space elevator? advantage?
+// 5. varied resources? differential pricing? technology to unlock?
+// 6. asteroids?
+// 7. power?
+// 8. announcements: "millionaire!"
+// 9. GRAPHICS!
+// 10. Ship load speed?
+// 11. Ship speed cap?
+// 12. Charts
+// 13. Ship speed upgrades apply to new ships, too?
 export default {
     data() {
       return {
