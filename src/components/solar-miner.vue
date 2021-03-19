@@ -1,7 +1,7 @@
 <template>
     <div class="w-1/3 m-auto">
-        <div class="border grid grid-cols-card-2 p-1">
-            <h1 class="col-start-left col-end-center">Earth</h1>
+        <div class="border grid grid-cols-card-2 p-1 my-2">
+            <h1 class="col-start-left col-end-center font-bold">Earth</h1>
             <div class="col-start-center col-end-right text-right">{{ earth.buildings }} / {{ earth.buildLimit }}</div>
 
             <div class="col-start-left col-end-center">Money</div>
@@ -22,8 +22,8 @@
             </div>
         </div>
 
-        <div class="border grid grid-cols-card-2 p-1" v-for="(planet, index) in planets" :key="index">
-            <h1 class="col-start-left col-end-center">{{ planet.name }}</h1>
+        <div class="border grid grid-cols-card-2 p-1 my-2" v-for="(planet, index) in planets" :key="index">
+            <h1 class="col-start-left col-end-center font-bold">{{ planet.name }}</h1>
             <div class="col-start-center col-end-right text-right">{{ planet.buildings }} / {{ planet.buildLimit }}</div>
 
             <div class="col-start-left col-end-center">Unmined resources</div>
@@ -55,7 +55,10 @@
                         @click="buyShip(planet)">Buy ship (100)</button>
 
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="upgradeShips(planet)">Upgrade ship (100)</button>
+                        @click="upgradeShips(planet)">Upgrade ships (100)</button>
+
+                <button class="border hover:bg-red-500 m-1 p-1 "
+                        @click="abandon(planet)">Abandon</button>
             </div>
         </div>
     </div>
@@ -166,6 +169,14 @@ export default {
         this.earth.money -= 100;
       },
 
+      abandon(planet) {
+        planet.buildings = 0;
+        planet.ships = [];
+        planet.storageCapacity = 1000;
+        planet.storedResources = 0;
+        planet.miningCapacity = 0;
+      },
+
       mine(planet) {
         let amountMined = planet.miningCapacity;
 
@@ -188,8 +199,17 @@ export default {
         if (this.earth.unprocessedResources < amountProcessed) {
           amountProcessed = this.earth.unprocessedResources;
         }
-        this.earth.money += amountProcessed;
+        this.earth.money += amountProcessed * 5;
         this.earth.unprocessedResources -= amountProcessed;
+      },
+
+      maintenance() {
+        this.earth.money -= this.earth.buildings;
+
+        this.planets.forEach((planet) => {
+            this.earth.money -= planet.buildings;
+            this.earth.money -= planet.ships.length;
+        });
       },
 
       ship(planet) {
@@ -256,6 +276,8 @@ export default {
             })
 
             this.process();
+
+            this.maintenance();
         }, 10);
       }
     }
