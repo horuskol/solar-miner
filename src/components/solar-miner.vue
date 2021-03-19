@@ -82,13 +82,13 @@ export default {
 
     methods: {
       buyMiner(planet) {
-          planet.miningCapacity += 100;
+          planet.miningCapacity += 1;
 
           this.planets.earth.money -= 100;
       },
 
       buyProcessor() {
-        this.planets.earth.processingCapacity += 100;
+        this.planets.earth.processingCapacity += 1;
 
         this.planets.earth.money -= 100;
       },
@@ -188,7 +188,7 @@ export default {
             this.ship(this.planets.moon);
 
             this.process();
-        }, 1000);
+        }, 10);
       }
     }
 }
