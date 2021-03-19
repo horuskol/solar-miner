@@ -1,19 +1,17 @@
 <template>
     <div class="w-1/3 m-auto">
         <div class="border grid grid-cols-card-2 p-1">
-            <h1 class="col-start-left col-end-right">Earth</h1>
+            <h1 class="col-start-left col-end-center">Earth</h1>
+            <div class="col-start-center col-end-right text-right">{{ earth.buildings }} / {{ earth.buildLimit }}</div>
 
             <div class="col-start-left col-end-center">Money</div>
             <div class="col-start-center col-end-right text-right">{{ earth.money }}</div>
 
-            <div class="col-start-left col-end-center">Unprocessed resources</div>
-            <div class="col-start-center col-end-right text-right">{{ earth.unprocessedResources }}</div>
-
             <div class="col-start-left col-end-center">Processing capacity</div>
             <div class="col-start-center col-end-right text-right">{{ earth.processingCapacity }}</div>
 
-            <div class="col-start-left col-end-center">Storage capacity</div>
-            <div class="col-start-center col-end-right text-right">{{ earth.storageCapacity }}</div>
+            <div class="col-start-left col-end-center">Storage</div>
+            <div class="col-start-center col-end-right text-right">{{ earth.unprocessedResources }} / {{ earth.storageCapacity }}</div>
 
             <div class="col-start-left col-end-right">
                 <button class="border hover:bg-green-500 m-1 p-1 "
@@ -25,19 +23,17 @@
         </div>
 
         <div class="border grid grid-cols-card-2 p-1" v-for="(planet, index) in planets" :key="index">
-            <h1 class="col-start-left col-end-right">{{ planet.name }}</h1>
+            <h1 class="col-start-left col-end-center">{{ planet.name }}</h1>
+            <div class="col-start-center col-end-right text-right">{{ planet.buildings }} / {{ planet.buildLimit }}</div>
 
-            <div class="col-start-left col-end-center">Stored resources</div>
-            <div class="col-start-center col-end-right text-right">{{ planet.storedResources }}</div>
-
-            <div class="col-start-left col-end-center">Unmined</div>
+            <div class="col-start-left col-end-center">Unmined resources</div>
             <div class="col-start-center col-end-right text-right">{{ planet.unminedResources }}</div>
 
             <div class="col-start-left col-end-center">Mining capacity</div>
             <div class="col-start-center col-end-right text-right">{{ planet.miningCapacity }}</div>
 
-            <div class="col-start-left col-end-center">Storage capacity</div>
-            <div class="col-start-center col-end-right text-right">{{ planet.storageCapacity }}</div>
+            <div class="col-start-left col-end-center">Storage</div>
+            <div class="col-start-center col-end-right text-right">{{ planet.storedResources }} / {{ planet.storageCapacity }}</div>
 
             <div class="col-start-left col-end-center">Ships</div>
             <div class="col-start-center col-end-right text-right">
@@ -76,13 +72,28 @@ export default {
           money: 1000,
           processingCapacity: 0,
           storageCapacity: 0,
+          buildLimit: 510, // 510,000,000 km2
+          buildings: 0,
         },
 
         planets: [
           {
             name: 'Moon',
             distance: 26,  // actually 0.00256 but scale... x10000
-            unminedResources: 1000000000,
+            buildLimit: 38, // 38,000,000 km2
+            buildings: 0,
+            unminedResources: 219000, // volume of moon is 21,900,000,000 km3
+            miningCapacity: 0,
+            storageCapacity: 0,
+            storedResources: 0,
+            ships: [],
+          },
+          {
+            name: 'Venus',
+            distance: 2700, // 0.27 AU
+            buildLimit: 460, // 460,000,000 km2
+            buildings: 0,
+            unminedResources: 9280000, // volume of venus is 928,000,000,000 km3
             miningCapacity: 0,
             storageCapacity: 0,
             storedResources: 0,
@@ -90,8 +101,10 @@ export default {
           },
           {
             name: 'Mars',
-            distance: 15000,
-            unminedResources: 1000000000,
+            distance: 15000, // 1.5 AU
+            buildLimit: 145, // 145,000,000 km2
+            buildings: 0,
+            unminedResources: 1630000, // volume of mars is 163,000,000,000 km3
             miningCapacity: 0,
             storageCapacity: 0,
             storedResources: 0,
@@ -103,15 +116,23 @@ export default {
 
     methods: {
       buyMiner(planet) {
-        planet.miningCapacity += 1;
+        if (planet.buildLimit > planet.buildings) {
+          planet.miningCapacity += 1;
 
-        this.earth.money -= 100;
+          this.earth.money -= 100;
+
+          planet.buildings += 1;
+        }
       },
 
       buyProcessor() {
-        this.earth.processingCapacity += 1;
+        if (this.earth.buildLimit > this.earth.buildings) {
+          this.earth.processingCapacity += 1;
 
-        this.earth.money -= 100;
+          this.earth.money -= 100;
+
+          this.earth.buildings += 1;
+        }
       },
 
       buyShip(planet) {
@@ -128,9 +149,13 @@ export default {
       },
 
       buyStorage(planet) {
-        planet.storageCapacity += 1000;
+        if (planet.buildLimit > planet.buildings) {
+          planet.storageCapacity += 1000;
 
-        this.earth.money -= 100;
+          this.earth.money -= 100;
+
+          planet.buildings += 1;
+        }
       },
 
       upgradeShips(planet) {
