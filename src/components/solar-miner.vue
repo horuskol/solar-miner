@@ -24,33 +24,39 @@
             </div>
         </div>
 
-        <div class="border grid grid-cols-card-2 p-1">
-            <h1 class="col-start-left col-end-right">Moon</h1>
+        <div class="border grid grid-cols-card-2 p-1" v-for="(planet, index) in planets" :key="index">
+            <h1 class="col-start-left col-end-right">{{ planet.name }}</h1>
 
             <div class="col-start-left col-end-center">Stored resources</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.moon.storedResources }}</div>
+            <div class="col-start-center col-end-right text-right">{{ planet.storedResources }}</div>
 
             <div class="col-start-left col-end-center">Unmined</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.moon.unminedResources }}</div>
+            <div class="col-start-center col-end-right text-right">{{ planet.unminedResources }}</div>
 
             <div class="col-start-left col-end-center">Mining capacity</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.moon.miningCapacity }}</div>
+            <div class="col-start-center col-end-right text-right">{{ planet.miningCapacity }}</div>
 
             <div class="col-start-left col-end-center">Storage capacity</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.moon.storageCapacity }}</div>
+            <div class="col-start-center col-end-right text-right">{{ planet.storageCapacity }}</div>
 
             <div class="col-start-left col-end-center">Ships</div>
-            <div class="col-start-center col-end-right text-right">{{ planets.moon.ships.length }}</div>
+            <div class="col-start-center col-end-right text-right">
+                {{ planet.ships.filter((ship) => { return ship.status === 'loading'}).length }} /
+                {{ planet.ships.filter((ship) => { return ship.status === 'toEarth'}).length }} /
+                {{ planet.ships.filter((ship) => { return ship.status === 'unloading'}).length }} /
+                {{ planet.ships.filter((ship) => { return ship.status === 'toPlanet'}).length }} /
+                {{ planet.ships.length }}
+            </div>
 
             <div class="col-start-left col-end-right">
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="buyMiner(planets.moon)">Buy miner (100)</button>
+                        @click="buyMiner(planet)">Buy miner (100)</button>
 
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="buyStorage(planets.moon)">Buy storage (100)</button>
+                        @click="buyStorage(planet)">Buy storage (100)</button>
 
                 <button class="border hover:bg-green-500 m-1 p-1 "
-                        @click="buyShip(planets.moon)">Buy ship (100)</button>
+                        @click="buyShip(planet)">Buy ship (100)</button>
             </div>
         </div>
     </div>
@@ -69,16 +75,26 @@ export default {
           storageCapacity: 0,
         },
 
-        planets: {
-          moon: {
-            distance: 26,
+        planets: [
+          {
+            name: 'Moon',
+            distance: 26,  // actually 0.00256 but scale... x10000
             unminedResources: 1000000000,
             miningCapacity: 0,
             storageCapacity: 0,
             storedResources: 0,
             ships: [],
-          }
-        }
+          },
+          {
+            name: 'Mars',
+            distance: 15000,
+            unminedResources: 1000000000,
+            miningCapacity: 0,
+            storageCapacity: 0,
+            storedResources: 0,
+            ships: [],
+          },
+        ],
       }
     },
 
@@ -198,9 +214,10 @@ export default {
     mounted() {
       if (!this.timer) {
         this.timer = setInterval(() => {
-            this.mine(this.planets.moon);
-
-            this.ship(this.planets.moon);
+            this.planets.forEach((planet) => {
+              this.mine(planet);
+              this.ship(planet);
+            })
 
             this.process();
         }, 10);
