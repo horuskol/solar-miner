@@ -5,14 +5,17 @@
         <h1 class="col-start-left col-end-center font-bold capitalize">{{ planet.name }}</h1>
         <div class="col-start-center col-end-right text-right">{{ planet.buildings }} / {{ planet.buildLimit }}</div>
 
+        <div class="col-start-left col-end-center">Distance (average)</div>
+        <div class="col-start-center col-end-right text-right">{{ new Intl.NumberFormat().format(planet.distance * 10000) }} km</div>
+
         <div class="col-start-left col-end-center">Unmined resources</div>
-        <div class="col-start-center col-end-right text-right">{{ planet.unminedResources }}</div>
+        <div class="col-start-center col-end-right text-right">{{ new Intl.NumberFormat().format(planet.unminedResources) }} Mm<sup>3</sup></div>
 
         <div class="col-start-left col-end-center">Mining capacity</div>
-        <div class="col-start-center col-end-right text-right">{{ planet.miningCapacity }}</div>
+        <div class="col-start-center col-end-right text-right">{{ planet.miningCapacity }} Mm<sup>3</sup></div>
 
         <div class="col-start-left col-end-center">Storage</div>
-        <div class="col-start-center col-end-right text-right">{{ planet.storedResources }} / {{ planet.storageCapacity }}</div>
+        <div class="col-start-center col-end-right text-right">{{ planet.storedResources }} / {{ planet.storageCapacity }} Mm<sup>3</sup></div>
 
         <div class="col-start-left col-end-center">Ships</div>
         <div class="col-start-center col-end-right text-right">
@@ -25,16 +28,16 @@
 
         <div class="col-start-left col-end-right">
             <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
-                    @click="$emit('buy-miner')">Buy miner (100)</button>
+                    @click="$emit('buy-miner')">Buy miner ($100,000)</button>
 
             <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
-                    @click="$emit('buy-storage')">Buy storage (100)</button>
+                    @click="$emit('buy-storage')">Buy storage ($100,000)</button>
 
             <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
-                    @click="$emit('buy-ship')">Buy ship (100)</button>
+                    @click="$emit('buy-ship')">Buy ship ($100,000)</button>
 
             <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
-                    @click="$emit('upgrade-ships')">Upgrade ships (100)</button>
+                    @click="$emit('upgrade-ships')">Upgrade ships ($100,000)</button>
 
             <button class="border border-gray-800 bg-black hover:bg-red-500 m-1 p-1 "
                     @click="$emit('abandon')">Abandon</button>
@@ -53,7 +56,6 @@ export default {
 
     computed: {
       background() {
-        console.log(this.planet.name);
         return `/img/${this.planet.name}-500.jpg`;
       }
     }

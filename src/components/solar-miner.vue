@@ -7,20 +7,20 @@
             <div class="col-start-center col-end-right text-right">{{ earth.buildings }} / {{ earth.buildLimit }}</div>
 
             <div class="col-start-left col-end-center">Money</div>
-            <div class="col-start-center col-end-right text-right">{{ earth.money }}</div>
+            <div class="col-start-center col-end-right text-right">${{ new Intl.NumberFormat().format(earth.money) }},000</div>
 
             <div class="col-start-left col-end-center">Processing capacity</div>
-            <div class="col-start-center col-end-right text-right">{{ earth.processingCapacity }}</div>
+            <div class="col-start-center col-end-right text-right">{{ earth.processingCapacity }} Mm<sup>3</sup></div>
 
             <div class="col-start-left col-end-center">Storage</div>
-            <div class="col-start-center col-end-right text-right">{{ earth.unprocessedResources }} / {{ earth.storageCapacity }}</div>
+            <div class="col-start-center col-end-right text-right">{{ earth.unprocessedResources }} / {{ earth.storageCapacity }} Mm<sup>3</sup></div>
 
             <div class="col-start-left col-end-right">
                 <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
-                        @click="buyProcessor(earth)">Buy processor (100)</button>
+                        @click="buyProcessor(earth)">Buy processor ($100,000)</button>
 
                 <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
-                        @click="buyStorage(earth)">Buy storage (100)</button>
+                        @click="buyStorage(earth)">Buy storage ($100,000)</button>
             </div>
         </div>
 
