@@ -1,5 +1,5 @@
 <template>
-    <div class="relative border grid grid-cols-card-2 p-1 my-2 overflow-hidden">
+    <div class="relative border grid grid-cols-card-2 p-1 my-2 overflow-hidden text-gray-300">
         <img class="planet-bg" :src="background" alt="" role="presentation"></img>
 
         <h1 class="col-start-left col-end-center font-bold capitalize">{{ planet.name }}</h1>
@@ -24,19 +24,19 @@
         </div>
 
         <div class="col-start-left col-end-right">
-            <button class="border bg-white hover:bg-green-500 m-1 p-1 "
+            <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
                     @click="$emit('buy-miner')">Buy miner (100)</button>
 
-            <button class="border bg-white hover:bg-green-500 m-1 p-1 "
+            <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
                     @click="$emit('buy-storage')">Buy storage (100)</button>
 
-            <button class="border bg-white hover:bg-green-500 m-1 p-1 "
+            <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
                     @click="$emit('buy-ship')">Buy ship (100)</button>
 
-            <button class="border bg-white hover:bg-green-500 m-1 p-1 "
+            <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
                     @click="$emit('upgrade-ships')">Upgrade ships (100)</button>
 
-            <button class="border bg-white hover:bg-red-500 m-1 p-1 "
+            <button class="border border-gray-800 bg-black hover:bg-red-500 m-1 p-1 "
                     @click="$emit('abandon')">Abandon</button>
         </div>
     </div>

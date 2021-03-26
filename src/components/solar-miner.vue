@@ -1,6 +1,6 @@
 <template>
     <div class="w-1/3 m-auto">
-        <div class="relative border grid grid-cols-card-2 p-1 my-2 overflow-hidden">
+        <div class="relative border grid grid-cols-card-2 p-1 my-2 overflow-hidden text-gray-300">
             <img class="planet-bg" src="/img/earth-500.jpg" alt="" role="presentation"></img>
 
             <h1 class="col-start-left col-end-center font-bold">Earth</h1>
@@ -16,10 +16,10 @@
             <div class="col-start-center col-end-right text-right">{{ earth.unprocessedResources }} / {{ earth.storageCapacity }}</div>
 
             <div class="col-start-left col-end-right">
-                <button class="border bg-white hover:bg-green-500 m-1 p-1 "
+                <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
                         @click="buyProcessor(earth)">Buy processor (100)</button>
 
-                <button class="border bg-white hover:bg-green-500 m-1 p-1 "
+                <button class="border border-gray-800 bg-black hover:bg-green-500 m-1 p-1 "
                         @click="buyStorage(earth)">Buy storage (100)</button>
             </div>
         </div>
