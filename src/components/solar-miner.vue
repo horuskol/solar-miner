@@ -1,6 +1,8 @@
 <template>
     <div class="w-1/3 m-auto">
-        <div class="border grid grid-cols-card-2 p-1 my-2">
+        <div class="relative border grid grid-cols-card-2 p-1 my-2 overflow-hidden">
+            <img class="planet-bg" src="/img/earth-500.jpg" alt="" role="presentation"></img>
+
             <h1 class="col-start-left col-end-center font-bold">Earth</h1>
             <div class="col-start-center col-end-right text-right">{{ earth.buildings }} / {{ earth.buildLimit }}</div>
 
@@ -14,10 +16,10 @@
             <div class="col-start-center col-end-right text-right">{{ earth.unprocessedResources }} / {{ earth.storageCapacity }}</div>
 
             <div class="col-start-left col-end-right">
-                <button class="border hover:bg-green-500 m-1 p-1 "
+                <button class="border bg-white hover:bg-green-500 m-1 p-1 "
                         @click="buyProcessor(earth)">Buy processor (100)</button>
 
-                <button class="border hover:bg-green-500 m-1 p-1 "
+                <button class="border bg-white hover:bg-green-500 m-1 p-1 "
                         @click="buyStorage(earth)">Buy storage (100)</button>
             </div>
         </div>
@@ -74,7 +76,7 @@ export default {
 
         planets: [
           {
-            name: 'Moon',
+            name: 'moon',
             distance: 26,  // actually 0.00256 but scale... x10000
             buildLimit: 38, // 38,000,000 km2
             buildings: 0,
@@ -85,7 +87,7 @@ export default {
             ships: [],
           },
           {
-            name: 'Venus',
+            name: 'venus',
             distance: 2700, // 0.27 AU
             buildLimit: 460, // 460,000,000 km2
             buildings: 0,
@@ -96,7 +98,7 @@ export default {
             ships: [],
           },
           {
-            name: 'Mars',
+            name: 'mars',
             distance: 15000, // 1.5 AU
             buildLimit: 145, // 145,000,000 km2
             buildings: 0,
@@ -277,3 +279,11 @@ export default {
 }
 </script>
 
+<style>
+    .planet-bg {
+      position: absolute;
+      z-index: -1;
+      opacity: 0.5;
+      width: 100%;
+    }
+</style>
